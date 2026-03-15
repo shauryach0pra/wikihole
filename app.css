@@ -178,7 +178,7 @@ body.cursor-hover #cursor-ring {
   transition: color .3s ease;
   white-space: nowrap;
 }
-.mode-btn[data-mode="explore"] { padding-left: 14px; }
+.mode-btn[data-mode="explore"] { padding-left: 10px; }
 .mode-btn[data-mode="bridge"] { padding-left: 20px; }
 .mode-btn.active { color: var(--text); }
 .mode-icon { font-size:1.1rem; line-height:1; display:inline-block; transition: transform .4s var(--ease-spring), filter .3s ease; }
@@ -186,7 +186,7 @@ body.cursor-hover #cursor-ring {
 .mode-name { font-family:'Syne',sans-serif; font-weight:700; font-size:.85rem; letter-spacing:.01em; }
 .mode-sub  { font-family:'DM Mono',monospace; font-size:.6rem; letter-spacing:.04em; opacity:.6; font-weight:300; }
 .mode-sub::before { content: '•'; margin-right: 4px; opacity: 0.4; }
-.mode-divider { width:1px; background:var(--glass-border); margin:6px 2px 6px -4px; flex-shrink:0; }
+.mode-divider { width:1px; background:var(--glass-border); margin:6px 2px 6px 2px; flex-shrink:0; }
 
 .mode-indicator {
   position:absolute; top:5px; bottom:5px; left:5px;
@@ -236,7 +236,7 @@ body.cursor-hover #cursor-ring {
 
 .text-input {
   flex:1; background:transparent; border:none; outline:none;
-  font-family:'DM Mono',monospace; font-size:.95rem; font-weight:400;
+  font-family:'DM Mono',monospace; font-size:0.76rem; font-weight:400;
   color:var(--text); letter-spacing:.01em; min-width:0;
   line-height: 1.6;
   padding: 3px 0;
@@ -279,7 +279,7 @@ body.cursor-hover #cursor-ring {
 /* Bridge panel layout */
 .bridge-shell {
   flex-direction: column;
-  gap: 10px;
+  gap: 0px;
   background: transparent !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -317,7 +317,11 @@ body.cursor-hover #cursor-ring {
 
 /* Input hints */
 .input-hint {
-  margin-top:12px; font-family:'DM Mono',monospace; font-size:.7rem;
+  margin-top:12px; font-family:'DM Mono',monospace; font-size:0.76rem;
+  color:var(--text-faint); text-align:center; letter-spacing:.03em;
+}
+.bridge-shell .input-hint {
+  margin-top:12px; font-family:'DM Mono',monospace; font-size:0.76rem;
   color:var(--text-faint); text-align:center; letter-spacing:.03em;
 }
 .hint-tag {
@@ -360,12 +364,12 @@ body.cursor-hover #cursor-ring {
   padding:7px 16px; box-shadow:0 3px 12px rgba(0,0,0,0.3);
 }
 #galaxy-topic-label {
-  font-family:'Syne',sans-serif; font-weight:700; font-size:.85rem; color:var(--text);
+  font-family:'Syne',sans-serif; font-weight:700; font-size:.85rem; letter-spacing:.01em; color:var(--text);
   max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
 }
 #galaxy-mode-badge {
-  font-family:'DM Mono',monospace; font-size:.62rem; font-weight:500;
-  letter-spacing:.08em; padding:2px 9px; border-radius:var(--r-full); text-transform:uppercase;
+  font-family:'Syne',sans-serif; font-weight:700; font-size:.85rem; letter-spacing:.01em;
+  padding:2px 9px; border-radius:var(--r-full);
 }
 /* Both badges use same pink accent */
 #galaxy-mode-badge.explore { background:rgba(244,114,182,0.12); color:#f472b6; border:1px solid rgba(244,114,182,0.25); }
@@ -537,8 +541,7 @@ body.cursor-hover #cursor-ring {
   margin-bottom: 7px;
 }
 .node-card-topic {
-  font-family:'Syne',sans-serif; font-weight:700; font-size:.7rem;
-  letter-spacing:.08em; text-transform:uppercase;
+  font-family:'Syne',sans-serif; font-weight:700; font-size:.85rem; letter-spacing:.01em;
   color:rgba(255,255,255,0.95);
   white-space: normal; word-break: break-word; overflow-wrap: break-word;
   text-shadow: 0 0 12px var(--ng);
