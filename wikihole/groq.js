@@ -13,8 +13,7 @@
  */
 const GROQ = {
   // API endpoint - proxied through Cloudflare Pages Function to hide API key
-  url: '/wikihole/api/groq',
-
+url: '/wikihole/api/groq',
   // Groq model to use - Llama 3.3 70B for high-quality reasoning
   model: 'llama-3.3-70b-versatile',
 
