@@ -4,29 +4,44 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>wikihole</title>
+  
+  <!-- Preconnect to Google Fonts for faster loading -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+  <!-- Google Fonts: Syne (headings), DM Mono (code), Fraunces (italic text) -->
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Fraunces:ital,opsz,wght@1,9..144,300;1,9..144,400&display=swap" rel="stylesheet" />
+  
+  <!-- Main stylesheet -->
   <link rel="stylesheet" href="app.css" />
 </head>
 <body>
 
+  <!-- Custom cursor with trailing ring effect -->
   <div id="cursor" aria-hidden="true">
     <div id="cursor-ring"></div>
   </div>
 
+  <!-- Animated starfield background canvas -->
   <canvas id="starfield" aria-hidden="true"></canvas>
+  
+  <!-- Nebula visual effects in background -->
   <div id="nebula" aria-hidden="true">
     <div class="nb nb-1"></div>
     <div class="nb nb-2"></div>
     <div class="nb nb-3"></div>
     <div class="nb nb-4"></div>
   </div>
+  
+  <!-- Grain texture overlay for depth -->
   <div id="grain" aria-hidden="true"></div>
 
+  <!-- LANDING SCREEN: Initial interface for mode selection and input -->
   <div id="screen-landing" class="screen active">
+    <!-- Brand header with logo and tagline -->
     <header id="brand">
       <div class="brand-mark">
+        <!-- WikiHole logo: concentric circles representing knowledge layers -->
         <svg class="mark-svg" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <circle cx="30" cy="30" r="28" stroke="currentColor" stroke-width="1.5" opacity="0.35"/>
           <circle cx="30" cy="30" r="18" stroke="currentColor" stroke-width="1.5" opacity="0.55"/>
@@ -39,27 +54,34 @@
       </div>
     </header>
 
+    <!-- Mode selection: Explore vs Bridge -->
     <nav id="mode-toggle" role="tablist" aria-label="Application mode">
+      <!-- Explore Mode: Discover connections from a single topic -->
       <button class="mode-btn active" data-mode="explore" role="tab" aria-selected="true">
         <span class="mode-icon" aria-hidden="true">◎</span>
         <span class="mode-name">Explore</span>
         <span class="mode-sub">branch into the unknown</span>
       </button>
       <div class="mode-divider" aria-hidden="true"></div>
+      <!-- Bridge Mode: Connect two distant topics -->
       <button class="mode-btn" data-mode="bridge" role="tab" aria-selected="false">
         <span class="mode-icon" aria-hidden="true">⇌</span>
         <span class="mode-name">Bridge</span>
         <span class="mode-sub">connect two worlds</span>
       </button>
+      <!-- Animated indicator showing current mode -->
       <div class="mode-indicator" aria-hidden="true"></div>
     </nav>
 
+    <!-- Input panels container -->
     <div class="panels-wrap">
+      <!-- Explore Mode Input Panel -->
       <div id="panel-explore" class="input-panel active">
         <div class="glass-input-shell">
           <input type="text" id="inp-explore" class="text-input"
             placeholder="enter any topic…" autocomplete="off" spellcheck="false" maxlength="80"/>
         </div>
+        <!-- Example topics to help users get started -->
         <p class="input-hint">try:
           <span class="hint-tag" data-val="black holes">black holes</span> ·
           <span class="hint-tag" data-val="jazz improvisation">jazz</span> ·
@@ -68,6 +90,7 @@
         </p>
       </div>
 
+      <!-- Bridge Mode Input Panel -->
       <div id="panel-bridge" class="input-panel">
         <div class="glass-input-shell bridge-shell">
           <div class="bridge-row">
@@ -75,6 +98,7 @@
               <input type="text" id="inp-from" class="text-input"
                 placeholder="start topic…" autocomplete="off" spellcheck="false" maxlength="60"/>
             </div>
+            <!-- Visual connector between inputs -->
             <div class="bridge-connector" aria-hidden="true">
               <span class="connector-glyph">⟶</span>
             </div>
@@ -83,6 +107,7 @@
                 placeholder="destination…" autocomplete="off" spellcheck="false" maxlength="60"/>
             </div>
           </div>
+        <!-- Example bridge connections to inspire users -->
         <p class="input-hint">try:
           <span class="hint-tag bridge-hint" data-from="jazz" data-to="quantum physics">jazz → quantum</span> ·
           <span class="hint-tag bridge-hint" data-from="black holes" data-to="ancient rome">black holes → rome</span> ·
@@ -93,7 +118,9 @@
     </div>
   </div>
 
+  <!-- GALAXY SCREEN: Interactive knowledge graph visualization -->
   <div id="screen-galaxy" class="screen">
+    <!-- Galaxy controls: navigation and info -->
     <div id="galaxy-controls">
       <button id="btn-back" class="glass-btn">home</button>
       <div id="galaxy-header">
@@ -103,14 +130,19 @@
       <button id="btn-reset" class="glass-btn" title="Zoom to start">⌖</button>
     </div>
 
+    <!-- Main world container for knowledge graph -->
     <div id="world">
+      <!-- SVG layer for connection lines between nodes -->
       <svg id="svg-edges" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
         <defs></defs>
       </svg>
+      <!-- Container for knowledge node cards -->
       <div id="nodes-layer" role="region" aria-label="Knowledge graph"></div>
+      <!-- SVG layer for animated pulse dots on connections -->
       <svg id="svg-dots" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"></svg>
     </div>
 
+    <!-- Loading indicator for API calls -->
     <div id="galaxy-loading" class="galaxy-loading hidden" role="status" aria-live="polite">
       <div class="gl-orb">
         <div class="gl-core"></div>
@@ -122,7 +154,10 @@
     </div>
   </div>
 
+  <!-- JavaScript modules loaded in order -->
+  <!-- Groq API integration functions -->
   <script src="groq.js"></script>
+  <!-- Main application logic and UI controllers -->
   <script src="app.js"></script>
 </body>
 </html>

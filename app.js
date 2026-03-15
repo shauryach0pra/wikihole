@@ -1,7 +1,20 @@
-/* ============================================================
-   WIKIHOLE — App Logic v4
-   ============================================================ */
+/**
+ * WikiHole - Main Application Logic v4
+ * 
+ * This is the core application that manages the interactive knowledge exploration
+ * interface. It handles node creation, physics simulation, user interactions,
+ * and visual effects for the knowledge graph visualization.
+ * 
+ * Key Features:
+ * - Interactive knowledge graph with physics-based layout
+ * - Two modes: Explore (branching) and Bridge (pathfinding)
+ * - Custom cursor with trailing effects
+ * - Animated starfield background
+ * - Zoom/pan navigation with keyboard controls
+ * - AI-powered connections via Groq API
+ */
 
+// Color palette for knowledge nodes - each node gets a unique color from this cycle
 const NODE_COLORS = [
   { color:'#38bdf8', glow:'rgba(56,189,248,0.2)',   subtle:'rgba(56,189,248,0.06)'   },
   { color:'#a78bfa', glow:'rgba(167,139,250,0.2)',  subtle:'rgba(167,139,250,0.06)'  },
@@ -10,6 +23,7 @@ const NODE_COLORS = [
   { color:'#fbbf24', glow:'rgba(251,191,36,0.2)',   subtle:'rgba(251,191,36,0.06)'   },
 ];
 
+// Loading messages that rotate during API calls to keep users engaged
 const LOADING_MSGS = [
   'mapping hidden connections…',
   'traversing knowledge wormholes…',
@@ -18,44 +32,66 @@ const LOADING_MSGS = [
   'unearthing buried connections…',
 ];
 
-/* ── STATE ── */
+/**
+ * GLOBAL STATE MANAGEMENT
+ * 
+ * Central state object that tracks all application data and UI state.
+ * This is the single source of truth for the entire application.
+ */
 const state = {
-  mode: 'explore',
-  nodes: new Map(),
-  edges: new Map(),
-  physics: { running:false, raf:null, ticks:0 },
-  pan: { active:false, startX:0, startY:0, offsetX:0, offsetY:0 },
-  zoom: 1,
-  viewport: { w: window.innerWidth, h: window.innerHeight },
-  rootNodeId: null,
-  focusedNodeId: null,
+  mode: 'explore',           // Current interaction mode: 'explore' or 'bridge'
+  nodes: new Map(),         // All knowledge nodes in the graph (Map<id, node>)
+  edges: new Map(),         // All connections between nodes (Map<id, edge>)
+  physics: {                // Physics simulation state
+    running: false,         // Whether physics is currently running
+    raf: null,             // RequestAnimationFrame ID
+    ticks: 0               // Number of physics ticks elapsed
+  },
+  pan: {                    // Pan/offset state for world navigation
+    active: false,          // Whether user is currently panning
+    startX: 0, startY: 0,  // Mouse position when pan started
+    offsetX: 0, offsetY: 0  // Current world offset in pixels
+  },
+  zoom: 1,                 // Current zoom level (1 = 100%)
+  viewport: {               // Browser viewport dimensions
+    w: window.innerWidth,   
+    h: window.innerHeight
+  },
+  rootNodeId: null,        // ID of the root/central node
+  focusedNodeId: null,      // ID of currently keyboard-focused node
 };
+// Counter to cycle through node colors
 let nodeColorCounter = 0;
 
-/* ── DOM ── */
+/**
+ * DOM ELEMENT REFERENCES
+ * 
+ * Cached references to frequently accessed DOM elements for performance.
+ * Using a querySelector wrapper for concise element access.
+ */
 const $ = s => document.querySelector(s);
 const DOM = {
   body:          document.body,
-  cursorRing:    $('#cursor-ring'),
-  starfield:     $('#starfield'),
-  screenLanding: $('#screen-landing'),
-  screenGalaxy:  $('#screen-galaxy'),
-  modeIndicator: $('.mode-indicator'),
-  panelExplore:  $('#panel-explore'),
-  panelBridge:   $('#panel-bridge'),
-  inpExplore:    $('#inp-explore'),
-  inpFrom:       $('#inp-from'),
-  inpTo:         $('#inp-to'),
-  btnBack:       $('#btn-back'),
-  btnReset:      $('#btn-reset'),
-  svgEdges:      $('#svg-edges'),
-  svgDots:       $('#svg-dots'),
-  nodesLayer:    $('#nodes-layer'),
-  world:         $('#world'),
-  galaxyLoading: $('#galaxy-loading'),
-  glStatus:      $('#gl-status'),
-  galaxyTopic:   $('#galaxy-topic-label'),
-  galaxyBadge:   $('#galaxy-mode-badge'),
+  cursorRing:    $('#cursor-ring'),           // Custom cursor ring
+  starfield:     $('#starfield'),             // Background canvas
+  screenLanding: $('#screen-landing'),        // Landing screen
+  screenGalaxy:  $('#screen-galaxy'),         // Galaxy/knowledge graph screen
+  modeIndicator: $('.mode-indicator'),       // Animated mode switch indicator
+  panelExplore:  $('#panel-explore'),         // Explore mode input panel
+  panelBridge:   $('#panel-bridge'),          // Bridge mode input panel
+  inpExplore:    $('#inp-explore'),           // Explore mode text input
+  inpFrom:       $('#inp-from'),              // Bridge mode start input
+  inpTo:         $('#inp-to'),                // Bridge mode destination input
+  btnBack:       $('#btn-back'),              // Return to landing button
+  btnReset:      $('#btn-reset'),             // Reset zoom/pan button
+  svgEdges:      $('#svg-edges'),             // SVG for connection lines
+  svgDots:       $('#svg-dots'),              // SVG for animated pulse dots
+  nodesLayer:    $('#nodes-layer'),           // Container for node elements
+  world:         $('#world'),                 // Main world container
+  galaxyLoading: $('#galaxy-loading'),        // Loading indicator
+  glStatus:      $('#gl-status'),             // Loading status text
+  galaxyTopic:   $('#galaxy-topic-label'),    // Current topic display
+  galaxyBadge:   $('#galaxy-mode-badge'),      // Current mode badge
 };
 
 /* ══════════════════════════════════════════
