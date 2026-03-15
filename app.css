@@ -550,7 +550,7 @@ body.cursor-hover #cursor-ring {
   text-transform: lowercase;
 }
 .node-card-fact {
-  font-family:'Fraunces',serif; font-style:italic; font-weight:300;
+  font-family:'DM Mono',monospace; font-style:italic; font-weight:300;
   font-size:.79rem; line-height:1.6; color:rgba(226,230,248,0.86);
   margin-bottom:10px;
   overflow-wrap: break-word; word-break: break-word;
