@@ -12,7 +12,7 @@ const GROQ = {
 
 RULES:
 - Every "fact" = exactly 2 sentences. No more, no less.
-- Sentence 1: State the surprising connection using ONE real specific detail (a name, number, date, or place).
+- Sentence 1: State the surprising connection using ONE real specific detail (a name, number or date).
 - Sentence 2: Explain WHY it's connected or what makes it wild — land the punchline.
 - Openers: "Plot twist:", "Turns out,", "Weirdly,", "Here's the wild part:", "Nobody mentions this but,"
 - Zero vague generalisations. Every sentence must be concrete.
