@@ -87,15 +87,16 @@ Return JSON:
 
 /* ── Bridge Mode: chain two topics ──────────────────────── */
 async function groqBridge(from, to) {
-  return _call(`Find 4-5 surprising stepping stones that secretly chain "${from}" to "${to}". Each step = a plot twist.
+  return _call(`Build a full chain from "${from}" to "${to}". The path MUST start with "${from}" as the first node and end with "${to}" as the last node. Fill the middle with 3-4 surprising stepping stones — each a plot twist.
 
 Return JSON:
 {
   "path": [
-    {"topic": "topic1", "fact": "2-sentence connection", "link": "optional-wiki-link"},
-    {"topic": "topic2", "fact": "2-sentence connection", "link": "optional-wiki-link"},
-    {"topic": "topic3", "fact": "2-sentence connection", "link": "optional-wiki-link"},
-    {"topic": "topic4", "fact": "2-sentence connection", "link": "optional-wiki-link"}
+    {"topic": "${from}", "fact": "2-sentence punchy fact about ${from}", "link": "optional-wiki-link"},
+    {"topic": "stepping stone 1", "fact": "2-sentence connection", "link": "optional-wiki-link"},
+    {"topic": "stepping stone 2", "fact": "2-sentence connection", "link": "optional-wiki-link"},
+    {"topic": "stepping stone 3", "fact": "2-sentence connection", "link": "optional-wiki-link"},
+    {"topic": "${to}", "fact": "2-sentence punchy fact about ${to}", "link": "optional-wiki-link"}
   ]
 }`);
 }

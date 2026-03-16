@@ -872,8 +872,13 @@ const App = {
     try {
       const data = await groqBridge(from, to);
       const path = data.path || [];
-      if (path.length<2) throw new Error('Path too short');
+      if (path.length < 3) throw new Error('Path too short');
       NodeMgr.clear(); hideLoading();
+
+      // Guarantee the first and last nodes are always the user's from/to topics.
+      // The API is prompted to include them, but we enforce it as a safety net.
+      path[0].topic              = from;
+      path[path.length - 1].topic = to;
 
       const positions = layoutBridgePath(path.length);
       const nodeIds   = [];
