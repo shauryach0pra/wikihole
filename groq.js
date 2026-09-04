@@ -6,7 +6,7 @@
 const GROQ = {
   // ← Replace with your deployed Worker URL after `wrangler deploy`
   url: 'https://wikihole-api.shaurya-chopra.workers.dev',
-  model: 'llama-3.3-70b-versatile',
+  model: 'openai/gpt-oss-20b', // fast, cheap, production-tier reasoning model
 
   systemPrompt: `You are WikiHole's hidden-connections engine. Surface SURPRISING, NON-OBVIOUS connections written like a brilliant friend sharing a revelation — punchy, specific, fun.
 
@@ -20,7 +20,7 @@ RULES:
 - Respond ONLY with valid JSON. No markdown, no preamble.`
 };
 
-async function _call(userContent) {
+async function _call(userContent, retries = 2) {
   const res = await fetch(GROQ.url, {
     method: 'POST',
     headers: {
@@ -34,10 +34,16 @@ async function _call(userContent) {
         { role: 'user', content: userContent }
       ],
       temperature: 0.92,
-      max_tokens: 500,
+      max_tokens: 1500,           // headroom for reasoning tokens + JSON output
+      reasoning_effort: 'low',    // keep hidden thinking short
       response_format: { type: 'json_object' }
     })
   });
+
+  if (res.status === 429 && retries > 0) {
+    await new Promise(r => setTimeout(r, 2000)); // back off 2s and retry
+    return _call(userContent, retries - 1);
+  }
 
   if (!res.ok) {
     const text = await res.text();
