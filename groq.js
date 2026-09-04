@@ -34,7 +34,7 @@ async function _call(userContent) {
         { role: 'user', content: userContent }
       ],
       temperature: 0.92,
-      max_tokens: 1000,
+      max_tokens: 500,
       response_format: { type: 'json_object' }
     })
   });
